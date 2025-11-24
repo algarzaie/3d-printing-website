@@ -1,0 +1,5 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed since we have a static HTML file
+  publish = "."
