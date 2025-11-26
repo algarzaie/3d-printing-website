@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PrintPro 3D - Professional 3D Printing Services</title>
   <meta name="description" content="Professional 3D printing services with AI-powered design tools. From prototype to production in record time.">
+
+  <!-- SEO Meta Tags -->
+  <meta name="keywords" content="3D printing, rapid prototyping, custom parts, AI 3D conversion, 2D to 3D, manufacturing, PLA, ABS, PETG, resin printing">
+  <meta name="author" content="PrintPro 3D">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://3d.bdecors.com/">
+
+  <!-- Open Graph Meta Tags for Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PrintPro 3D - Professional 3D Printing Services">
+  <meta property="og:description" content="Professional 3D printing services with AI-powered design tools. From prototype to production in record time.">
+  <meta property="og:url" content="https://3d.bdecors.com/">
+  <meta property="og:site_name" content="PrintPro 3D">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PrintPro 3D - Professional 3D Printing Services">
+  <meta name="twitter:description" content="Professional 3D printing services with AI-powered design tools. From prototype to production in record time.">
+
+  <!-- Contact Information -->
+  <meta name="contact" content="3d@bdecors.com">
+  <meta name="phone" content="0568400053">
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -23,6 +47,23 @@
     html {
       scroll-behavior: smooth;
     }
+    /* Enable custom cursor only on devices with fine pointer (mouse/trackpad) */
+    @media (pointer: coarse) {
+      .custom-cursor-wrapper {
+        cursor: auto !important;
+      }
+      .custom-cursor, .custom-cursor-trail {
+        display: none !important;
+      }
+    }
+    @media (hover: none) {
+      .custom-cursor-wrapper {
+        cursor: auto !important;
+      }
+      .custom-cursor, .custom-cursor-trail {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -35,6 +76,7 @@
     <input type="text" name="material" />
     <input type="number" name="quantity" />
     <textarea name="description"></textarea>
+    <input type="file" name="files" multiple />
     <input type="hidden" name="bot-field" />
   </form>
 
@@ -135,6 +177,8 @@
       });
       const [uploadedFiles, setUploadedFiles] = useState([]);
       const [submitted, setSubmitted] = useState(false);
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const [formErrors, setFormErrors] = useState({});
       const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
       const [trail, setTrail] = useState([]);
       const [isHovering, setIsHovering] = useState(false);
@@ -244,16 +288,49 @@
         setUploadedFiles(prev => [...prev, ...files.map(f => f.name)]);
       };
 
-      const handleSubmit = () => {
-        // Intentionally empty - let native HTML form submission work
-        // React should NOT interfere with Netlify Forms
+      const validateForm = () => {
+        const errors = {};
+
+        if (!formData.name.trim()) {
+          errors.name = 'Name is required';
+        }
+
+        if (!formData.email.trim()) {
+          errors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          errors.email = 'Please enter a valid email address';
+        }
+
+        if (!formData.projectType) {
+          errors.projectType = 'Please select a project type';
+        }
+
+        if (!formData.description.trim()) {
+          errors.description = 'Project description is required';
+        }
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        setIsSubmitting(true);
+
+        // Let the form submit naturally after validation
+        e.target.submit();
       };
 
       return (
-        <div className="min-h-screen bg-blue-50 cursor-none">
+        <div className="min-h-screen bg-blue-50 custom-cursor-wrapper cursor-none">
           {/* Custom Cursor - Small dot */}
           <div
-            className="fixed pointer-events-none z-50"
+            className="custom-cursor fixed pointer-events-none z-50"
             style={{
               left: cursorPos.x - 3,
               top: cursorPos.y - 3,
@@ -261,10 +338,10 @@
           >
             <div className="w-1.5 h-1.5 bg-cyan-600 rounded-full" />
           </div>
-          
+
           {/* Ribbon Trail Effect - Cloth-like */}
           <svg
-            className="fixed pointer-events-none z-40 top-0 left-0 w-full h-full"
+            className="custom-cursor-trail fixed pointer-events-none z-40 top-0 left-0 w-full h-full"
             style={{ overflow: 'visible' }}
           >
             <defs>
@@ -309,11 +386,11 @@
           </svg>
 
           {/* Header */}
-          <header className="bg-white/95 backdrop-blur-md border-b border-cyan-200 sticky top-0 z-40 shadow-sm">
+          <header className="bg-white/95 backdrop-blur-md border-b border-cyan-200 sticky top-0 z-40 shadow-sm" role="banner">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
-                  <div className="relative">
+                  <div className="relative" aria-hidden="true">
                     <Layers className="w-8 h-8 text-cyan-400" />
                     <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full animate-pulse" />
                   </div>
@@ -321,9 +398,9 @@
                     PrintPro 3D
                   </span>
                 </div>
-                
+
                 {/* Navigation - Always visible horizontally */}
-                <nav className="flex space-x-1 flex-1 justify-center">
+                <nav className="flex space-x-1 flex-1 justify-center" role="navigation" aria-label="Main navigation">
                   {navItems.map((item) => (
                     <a
                       key={item.id}
@@ -354,7 +431,7 @@
           </header>
 
           {/* Hero Section */}
-          <section id="home" className="relative bg-gradient-to-b from-blue-50 to-white text-gray-900 py-24 overflow-hidden">
+          <section id="home" className="relative bg-gradient-to-b from-blue-50 to-white text-gray-900 py-24 overflow-hidden" aria-label="Hero section">
             {/* Animated background grid */}
             <div className="absolute inset-0 opacity-20">
               <div className="absolute inset-0" style={{
@@ -403,10 +480,10 @@
           </section>
 
           {/* Services Section */}
-          <section id="services" className="py-20 bg-white">
+          <section id="services" className="py-20 bg-white" aria-labelledby="services-heading">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
+                <h2 id="services-heading" className="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
                 <p className="text-xl text-gray-600">Cutting-edge 3D printing solutions for every need</p>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
@@ -427,12 +504,12 @@
           </section>
 
           {/* AI Technology Highlight */}
-          <section id="technology" className="py-16 bg-blue-50">
+          <section id="technology" className="py-16 bg-blue-50" aria-labelledby="technology-heading">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="bg-gradient-to-br from-white to-blue-50 border border-cyan-200 rounded-2xl shadow-xl p-8 md:p-12">
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    <h2 id="technology-heading" className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                       2D Photo to 3D Model in Minutes
                     </h2>
                     <p className="text-lg text-gray-600 mb-6">
@@ -464,10 +541,10 @@
           </section>
 
           {/* Product Gallery */}
-          <section id="gallery" className="py-20 bg-white">
+          <section id="gallery" className="py-20 bg-white" aria-labelledby="gallery-heading">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">What We Can Print</h2>
+                <h2 id="gallery-heading" className="text-4xl font-bold text-gray-900 mb-4">What We Can Print</h2>
                 <p className="text-xl text-gray-600">From prototypes to production parts</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -488,10 +565,10 @@
           </section>
 
           {/* Quote Request Form */}
-          <section id="quote" className="py-20 bg-blue-50">
+          <section id="quote" className="py-20 bg-blue-50" aria-labelledby="quote-heading">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Request a Quote</h2>
+                <h2 id="quote-heading" className="text-4xl font-bold text-gray-900 mb-4">Request a Quote</h2>
                 <p className="text-xl text-gray-600">Tell us about your project and we'll get back to you within 24 hours</p>
               </div>
 
@@ -504,13 +581,13 @@
                   <p className="text-gray-600">We'll review your project and send you a detailed quote within 24 hours.</p>
                 </div>
               ) : (
-                <form name="quote-request" method="POST" action="https://formspree.io/f/xldkbnay" className="bg-white border border-cyan-200 rounded-2xl p-8 space-y-6 shadow-lg">
+                <form name="quote-request" method="POST" data-netlify="true" action="/thank-you.html" onSubmit={handleSubmit} className="bg-white border border-cyan-200 rounded-2xl p-8 space-y-6 shadow-lg">
                   {/* Hidden fields for Netlify Forms */}
                   <input type="hidden" name="form-name" value="quote-request" />
                   <p className="hidden">
                     <label>Don't fill this out if you're human: <input name="bot-field" /></label>
                   </p>
-                  
+
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -522,9 +599,11 @@
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        className={`w-full px-4 py-3 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${formErrors.name ? 'border-red-500' : 'border-gray-300'}`}
                         placeholder="Abdulah Hamad"
+                        disabled={isSubmitting}
                       />
+                      {formErrors.name && <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -536,9 +615,11 @@
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        className={`w-full px-4 py-3 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${formErrors.email ? 'border-red-500' : 'border-gray-300'}`}
                         placeholder="Abdulah@Example.com"
+                        disabled={isSubmitting}
                       />
+                      {formErrors.email && <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>}
                     </div>
                   </div>
 
@@ -554,6 +635,7 @@
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="055 555 5555"
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div>
@@ -565,7 +647,8 @@
                         required
                         value={formData.projectType}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        className={`w-full px-4 py-3 bg-white border rounded-lg text-gray-900 focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${formErrors.projectType ? 'border-red-500' : 'border-gray-300'}`}
+                        disabled={isSubmitting}
                       >
                         <option value="">Select type</option>
                         <option value="prototype">Prototype</option>
@@ -574,6 +657,7 @@
                         <option value="custom">Custom Part</option>
                         <option value="other">Other</option>
                       </select>
+                      {formErrors.projectType && <p className="mt-1 text-sm text-red-600">{formErrors.projectType}</p>}
                     </div>
                   </div>
 
@@ -587,6 +671,7 @@
                         value={formData.material}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        disabled={isSubmitting}
                       >
                         {materials.map(mat => (
                           <option key={mat.name} value={mat.name}>
@@ -606,6 +691,7 @@
                         value={formData.quantity}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -620,9 +706,11 @@
                       value={formData.description}
                       onChange={handleInputChange}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      className={`w-full px-4 py-3 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${formErrors.description ? 'border-red-500' : 'border-gray-300'}`}
                       placeholder="Describe your project, dimensions, special requirements, etc."
+                      disabled={isSubmitting}
                     />
+                    {formErrors.description && <p className="mt-1 text-sm text-red-600">{formErrors.description}</p>}
                   </div>
 
                   <div>
@@ -632,20 +720,21 @@
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-cyan-400 transition bg-white">
                       <input
                         type="file"
+                        name="files"
                         multiple
                         onChange={handleFileUpload}
-                        className="hidden"
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100"
                         id="file-upload"
                         accept="image/*,.stl,.obj,.step,.stp"
+                        data-netlify="true"
                       />
-                      <label htmlFor="file-upload" className="cursor-pointer">
-                        <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                      <div className="mt-4">
+                        <Upload className="w-12 h-12 text-gray-400 mx-auto mb-2" />
                         <p className="text-sm text-gray-500">PNG, JPG, STL, OBJ, STEP files</p>
-                      </label>
+                      </div>
                       {uploadedFiles.length > 0 && (
                         <div className="mt-4 text-left">
-                          <p className="font-semibold text-gray-700 mb-2">Uploaded files:</p>
+                          <p className="font-semibold text-gray-700 mb-2">Selected files:</p>
                           <ul className="space-y-1">
                             {uploadedFiles.map((file, idx) => (
                               <li key={idx} className="text-sm text-gray-600 flex items-center">
@@ -663,9 +752,26 @@
                     type="submit"
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
-                    className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-4 rounded-lg font-semibold text-lg hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 flex items-center justify-center shadow-lg shadow-cyan-500/25"
+                    disabled={isSubmitting}
+                    className={`w-full py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center justify-center shadow-lg ${
+                      isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-400 hover:to-cyan-500 shadow-cyan-500/25'
+                    }`}
                   >
-                    Submit Quote Request <ArrowRight className="ml-2 w-5 h-5" />
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        Submit Quote Request <ArrowRight className="ml-2 w-5 h-5" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}
@@ -673,7 +779,7 @@
           </section>
 
           {/* Contact Section */}
-          <section id="contact" className="py-16 bg-white border-t border-gray-200">
+          <section id="contact" className="py-16 bg-white border-t border-gray-200" aria-labelledby="contact-heading" role="contentinfo">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid md:grid-cols-3 gap-8">
                 <div>
