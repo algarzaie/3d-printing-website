@@ -1,0 +1,23 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed since we have a static HTML file
+  publish = "."
+
+# Form submission success redirect
+[[redirects]]
+  from = "/quote-success"
+  to = "/thank-you.html"
+  status = 200
+
+# SPA-like routing - serve index.html for root
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# Default 404 page
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
