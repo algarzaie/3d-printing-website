@@ -398,7 +398,7 @@
         },
         {
           question: 'What is your pricing model?',
-          answer: 'Pricing depends on material, size, complexity, and quantity. Small prototypes start around $15-50. Use our pricing calculator above or request a detailed quote.'
+          answer: 'Pricing depends on material, size, complexity, and quantity. Request a detailed quote for exact pricing.'
         },
         {
           question: 'Can you help with design optimization?',
@@ -419,10 +419,10 @@
       ];
 
       const pricingEstimates = [
-        { size: 'Small (< 5cm)', pla: '$15-30', abs: '$20-35', resin: '$25-40', nylon: '$30-50' },
-        { size: 'Medium (5-15cm)', pla: '$30-60', abs: '$40-70', resin: '$50-90', nylon: '$60-110' },
-        { size: 'Large (15-30cm)', pla: '$60-150', abs: '$80-180', resin: '$100-250', nylon: '$120-300' },
-        { size: 'XL (> 30cm)', pla: '$150+', abs: '$180+', resin: '$250+', nylon: '$300+' }
+        { weight: 'Light (< 50g)', time: '2-4 hours', price: '50-150 SAR' },
+        { weight: 'Medium (50-200g)', time: '4-8 hours', price: '150-400 SAR' },
+        { weight: 'Heavy (200-500g)', time: '8-16 hours', price: '400-900 SAR' },
+        { weight: 'Extra Heavy (> 500g)', time: '16+ hours', price: '900+ SAR' }
       ];
 
       const handleInputChange = (e) => {
@@ -773,24 +773,22 @@
             </div>
           </section>
 
-          {/* Pricing Estimator Section */}
+          {/* Pricing Guide Section */}
           <section id="pricing" className="py-20 bg-blue-50" aria-labelledby="pricing-heading">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <h2 id="pricing-heading" className="text-4xl font-bold text-gray-900 mb-4">Pricing Guide</h2>
-                <p className="text-xl text-gray-600">Estimated costs based on size and material</p>
-                <p className="text-sm text-gray-500 mt-2">Final pricing depends on complexity and quantity. Request a quote for exact pricing.</p>
+                <p className="text-xl text-gray-600">Estimated costs based on weight and print time</p>
+                <p className="text-sm text-gray-500 mt-2">All prices in SAR. Final pricing depends on material, complexity, and quantity.</p>
               </div>
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-cyan-200">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left font-semibold">Part Size</th>
-                        <th className="px-6 py-4 text-left font-semibold">PLA</th>
-                        <th className="px-6 py-4 text-left font-semibold">ABS</th>
-                        <th className="px-6 py-4 text-left font-semibold">Resin</th>
-                        <th className="px-6 py-4 text-left font-semibold">Nylon</th>
+                        <th className="px-6 py-4 text-left font-semibold">Weight</th>
+                        <th className="px-6 py-4 text-left font-semibold">Print Time</th>
+                        <th className="px-6 py-4 text-left font-semibold">Estimated Price</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -799,11 +797,9 @@
                           key={index}
                           className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-200 hover:bg-cyan-50 transition-colors`}
                         >
-                          <td className="px-6 py-4 font-semibold text-gray-900">{row.size}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.pla}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.abs}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.resin}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.nylon}</td>
+                          <td className="px-6 py-4 font-semibold text-gray-900">{row.weight}</td>
+                          <td className="px-6 py-4 text-gray-700">{row.time}</td>
+                          <td className="px-6 py-4 text-gray-700">{row.price}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -813,16 +809,22 @@
                   <div className="grid md:grid-cols-3 gap-4 text-sm">
                     <div className="flex items-start">
                       <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Volume discounts for 10+ units</span>
+                      <span className="text-gray-700">Volume discount for 5+ units</span>
                     </div>
                     <div className="flex items-start">
                       <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Free shipping on orders over $200</span>
+                      <span className="text-gray-700">Free local shipping on orders above 2500 SAR</span>
                     </div>
                     <div className="flex items-start">
                       <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">Rush delivery available (+20%)</span>
                     </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-cyan-300 text-center">
+                    <p className="text-sm text-gray-700 font-semibold">
+                      <Check className="w-4 h-4 text-cyan-600 inline mr-1" />
+                      10% discount on repeat customers
+                    </p>
                   </div>
                 </div>
               </div>
