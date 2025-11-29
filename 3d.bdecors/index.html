@@ -419,10 +419,11 @@
       ];
 
       const pricingEstimates = [
-        { weight: 'Light (< 50g)', time: '2-4 hours', price: '50-150 SAR' },
-        { weight: 'Medium (50-200g)', time: '4-8 hours', price: '150-400 SAR' },
-        { weight: 'Heavy (200-500g)', time: '8-16 hours', price: '400-900 SAR' },
-        { weight: 'Extra Heavy (> 500g)', time: '16+ hours', price: '900+ SAR' }
+        { weight: '< 0.5 KG', rate: '2.5 SAR/gram' },
+        { weight: '0.5 KG - 1 KG', rate: '2.2 SAR/gram' },
+        { weight: '1 KG - 5 KG', rate: '1.5 SAR/gram' },
+        { weight: '5 KG - 10 KG', rate: '1 SAR/gram' },
+        { weight: '> 10 KG', rate: 'Custom Quote' }
       ];
 
       const handleInputChange = (e) => {
@@ -778,17 +779,16 @@
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <h2 id="pricing-heading" className="text-4xl font-bold text-gray-900 mb-4">Pricing Guide</h2>
-                <p className="text-xl text-gray-600">Estimated costs based on weight and print time</p>
-                <p className="text-sm text-gray-500 mt-2">All prices in SAR. Final pricing depends on material, complexity, and quantity.</p>
+                <p className="text-xl text-gray-600">Per-gram pricing based on total weight</p>
+                <p className="text-sm text-gray-500 mt-2">All prices in SAR. Printing time is subject to shape, color variations, complexity, and printing queue.</p>
               </div>
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-cyan-200">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left font-semibold">Weight</th>
-                        <th className="px-6 py-4 text-left font-semibold">Print Time</th>
-                        <th className="px-6 py-4 text-left font-semibold">Estimated Price</th>
+                        <th className="px-6 py-4 text-left font-semibold">Weight Range</th>
+                        <th className="px-6 py-4 text-left font-semibold">Price per Gram</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -798,8 +798,7 @@
                           className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-200 hover:bg-cyan-50 transition-colors`}
                         >
                           <td className="px-6 py-4 font-semibold text-gray-900">{row.weight}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.time}</td>
-                          <td className="px-6 py-4 text-gray-700">{row.price}</td>
+                          <td className="px-6 py-4 text-gray-700 font-semibold text-cyan-700">{row.rate}</td>
                         </tr>
                       ))}
                     </tbody>
