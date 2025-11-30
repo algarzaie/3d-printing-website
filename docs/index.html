@@ -40,6 +40,14 @@
   </script>
   -->
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config -->
+  <script src="./firebase-config.js"></script>
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -217,6 +225,10 @@
       const [trail, setTrail] = useState([]);
       const [isHovering, setIsHovering] = useState(false);
       const [activeSection, setActiveSection] = useState('home');
+      const [currentUser, setCurrentUser] = useState(null);
+      const [discountCode, setDiscountCode] = useState('');
+      const [discountError, setDiscountError] = useState('');
+      const [discountSuccess, setDiscountSuccess] = useState('');
 
       // Dynamic cursor with ribbon trail effect
       useEffect(() => {
@@ -255,6 +267,111 @@
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
       }, []);
+
+      // Firebase Auth State Observer
+      useEffect(() => {
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            setCurrentUser(user);
+            if (user) {
+              // Auto-fill name and email if user is signed in
+              setFormData(prev => ({
+                ...prev,
+                name: user.displayName || prev.name,
+                email: user.email || prev.email
+              }));
+            }
+          });
+          return () => unsubscribe();
+        }
+      }, []);
+
+      // Google Sign In Handler
+      const handleGoogleSignIn = async () => {
+        if (typeof firebase === 'undefined' || !firebase.auth) {
+          alert('Firebase is not loaded. Please refresh the page.');
+          return;
+        }
+
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          await firebase.auth().signInWithPopup(provider);
+        } catch (error) {
+          console.error('Sign in error:', error);
+          alert('Sign in failed. Please try again.');
+        }
+      };
+
+      // Sign Out Handler
+      const handleSignOut = async () => {
+        try {
+          await firebase.auth().signOut();
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            projectType: '',
+            description: '',
+            quantity: '1',
+            material: 'PLA'
+          });
+        } catch (error) {
+          console.error('Sign out error:', error);
+        }
+      };
+
+      // Validate Discount Code
+      const validateDiscountCode = async () => {
+        if (!discountCode.trim()) {
+          setDiscountError('');
+          setDiscountSuccess('');
+          return;
+        }
+
+        if (!currentUser) {
+          setDiscountError('Please sign in to use a discount code');
+          setDiscountSuccess('');
+          return;
+        }
+
+        try {
+          const db = firebase.firestore();
+          const snapshot = await db.collection('discountCodes')
+            .where('code', '==', discountCode.trim())
+            .where('userId', '==', currentUser.uid)
+            .limit(1)
+            .get();
+
+          if (snapshot.empty) {
+            setDiscountError('Invalid discount code');
+            setDiscountSuccess('');
+            return;
+          }
+
+          const codeDoc = snapshot.docs[0];
+          const codeData = codeDoc.data();
+
+          if (codeData.used) {
+            setDiscountError('This code has already been used');
+            setDiscountSuccess('');
+            return;
+          }
+
+          const expiresAt = codeData.expiresAt.toDate();
+          if (expiresAt < new Date()) {
+            setDiscountError('This code has expired');
+            setDiscountSuccess('');
+            return;
+          }
+
+          setDiscountError('');
+          setDiscountSuccess(`✓ 10% discount code applied!`);
+        } catch (error) {
+          console.error('Error validating discount code:', error);
+          setDiscountError('Error validating code');
+          setDiscountSuccess('');
+        }
+      };
 
       const navItems = [
         { id: 'home', label: 'Home' },
@@ -557,14 +674,54 @@
                   ))}
                 </nav>
 
-                <a
-                  href="#quote"
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 shadow-lg shadow-cyan-500/25"
-                >
-                  Request Quote
-                </a>
+                <div className="flex items-center space-x-4">
+                  {currentUser ? (
+                    <>
+                      <a
+                        href="./dashboard.html"
+                        className="flex items-center space-x-2 hover:opacity-80 transition"
+                      >
+                        <img
+                          src={currentUser.photoURL || 'https://via.placeholder.com/32'}
+                          alt={currentUser.displayName}
+                          className="w-8 h-8 rounded-full border-2 border-cyan-400"
+                        />
+                        <span className="font-semibold text-gray-900 hidden sm:block">
+                          {currentUser.displayName || 'My Account'}
+                        </span>
+                      </a>
+                      <button
+                        onClick={handleSignOut}
+                        className="text-gray-600 hover:text-gray-900 text-sm font-medium transition"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleGoogleSignIn}
+                      onMouseEnter={() => setIsHovering(true)}
+                      onMouseLeave={() => setIsHovering(false)}
+                      className="bg-white border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-300 flex items-center space-x-2 shadow-sm"
+                    >
+                      <svg className="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                      </svg>
+                      <span>Sign in with Google</span>
+                    </button>
+                  )}
+                  <a
+                    href="#quote"
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                    className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 shadow-lg shadow-cyan-500/25"
+                  >
+                    Request Quote
+                  </a>
+                </div>
               </div>
             </div>
           </header>
@@ -997,6 +1154,47 @@
                         </div>
                       )}
                     </div>
+                  </div>
+
+                  {/* Discount Code Field */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Discount Code (Optional)
+                    </label>
+                    <div className="flex space-x-3">
+                      <input
+                        type="text"
+                        name="discount_code"
+                        value={discountCode}
+                        onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                        onBlur={validateDiscountCode}
+                        className={`flex-1 px-4 py-3 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${
+                          discountError ? 'border-red-500' : discountSuccess ? 'border-green-500' : 'border-gray-300'
+                        }`}
+                        placeholder="REVIEW10-XXXXX"
+                        disabled={isSubmitting || !currentUser}
+                      />
+                      <button
+                        type="button"
+                        onClick={validateDiscountCode}
+                        className="px-6 py-3 bg-cyan-600 text-white rounded-lg font-semibold hover:bg-cyan-700 transition disabled:bg-gray-400"
+                        disabled={!discountCode.trim() || isSubmitting || !currentUser}
+                      >
+                        Validate
+                      </button>
+                    </div>
+                    {!currentUser && (
+                      <p className="mt-2 text-sm text-gray-500">
+                        <a href="#" onClick={(e) => { e.preventDefault(); handleGoogleSignIn(); }} className="text-cyan-600 hover:text-cyan-700 font-semibold">
+                          Sign in
+                        </a> to use a discount code
+                      </p>
+                    )}
+                    {discountError && <p className="mt-2 text-sm text-red-600">❌ {discountError}</p>}
+                    {discountSuccess && <p className="mt-2 text-sm text-green-600">{discountSuccess}</p>}
+                    <p className="mt-2 text-xs text-gray-500">
+                      Leave reviews on completed projects to get 10% discount codes!
+                    </p>
                   </div>
 
                   <button
