@@ -240,7 +240,7 @@
       // Track active section on scroll
       useEffect(() => {
         const handleScroll = () => {
-          const sections = ['home', 'services', 'technology', 'portfolio', 'testimonials', 'pricing', 'gallery', 'faq', 'quote', 'contact'];
+          const sections = ['home', 'services', 'technology', 'portfolio', 'testimonials', 'gallery', 'faq', 'quote', 'contact'];
           for (const section of sections) {
             const element = document.getElementById(section);
             if (element) {
@@ -260,7 +260,6 @@
         { id: 'home', label: 'Home' },
         { id: 'services', label: 'Services' },
         { id: 'portfolio', label: 'Portfolio' },
-        { id: 'pricing', label: 'Pricing' },
         { id: 'testimonials', label: 'Reviews' },
         { id: 'faq', label: 'FAQ' },
         { id: 'quote', label: 'Get Quote' }
@@ -416,14 +415,6 @@
           question: 'Can you ship internationally?',
           answer: 'Yes, we ship worldwide! Shipping costs and times vary by destination. Express shipping available for urgent orders.'
         }
-      ];
-
-      const pricingEstimates = [
-        { weight: '< 0.5 KG', rate: '2.5 SAR/gram' },
-        { weight: '0.5 KG - 1 KG', rate: '2.2 SAR/gram' },
-        { weight: '1 KG - 5 KG', rate: '1.5 SAR/gram' },
-        { weight: '5 KG - 10 KG', rate: '1 SAR/gram' },
-        { weight: '> 10 KG', rate: 'Custom Quote' }
       ];
 
       const handleInputChange = (e) => {
@@ -770,73 +761,6 @@
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Pricing Guide Section */}
-          <section id="pricing" className="py-20 bg-blue-50" aria-labelledby="pricing-heading">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
-                <h2 id="pricing-heading" className="text-4xl font-bold text-gray-900 mb-4">Pricing Guide</h2>
-                <p className="text-xl text-gray-600">Per-gram pricing based on total weight</p>
-                <p className="text-sm text-gray-500 mt-2">All prices in SAR. Printing time is subject to shape, color variations, complexity, and printing queue.</p>
-              </div>
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-cyan-200">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white">
-                      <tr>
-                        <th className="px-6 py-4 text-left font-semibold">Weight Range</th>
-                        <th className="px-6 py-4 text-left font-semibold">Price per Gram</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pricingEstimates.map((row, index) => (
-                        <tr
-                          key={index}
-                          className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-200 hover:bg-cyan-50 transition-colors`}
-                        >
-                          <td className="px-6 py-4 font-semibold text-gray-900">{row.weight}</td>
-                          <td className="px-6 py-4 text-gray-700 font-semibold text-cyan-700">{row.rate}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="bg-gray-50 border-t border-cyan-200 p-6">
-                  <div className="grid md:grid-cols-3 gap-4 text-sm">
-                    <div className="flex items-start">
-                      <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Volume discount for 5+ units</span>
-                    </div>
-                    <div className="flex items-start">
-                      <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Free local shipping on orders above 2500 SAR</span>
-                    </div>
-                    <div className="flex items-start">
-                      <Check className="w-5 h-5 text-cyan-600 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">Rush delivery available (+20%)</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-cyan-300 text-center">
-                    <p className="text-sm text-gray-700 font-semibold">
-                      <Check className="w-4 h-4 text-cyan-600 inline mr-1" />
-                      10% discount on repeat customers
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="text-center mt-8">
-                <a
-                  href="#quote"
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  className="inline-flex items-center bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 shadow-lg shadow-cyan-500/25"
-                >
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  Get Exact Quote
-                </a>
               </div>
             </div>
           </section>
