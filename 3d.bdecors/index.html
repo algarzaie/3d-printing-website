@@ -48,45 +48,180 @@
   <!-- Firebase Config -->
   <script src="./firebase-config.js"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    :root {
+      /* BDecors 3D color scheme - light cyan + orange */
+      --bdecors-bg: #f6fbfd;
+      --bdecors-surface: #ffffff;
+      --bdecors-line: #d8eef3;
+      --bdecors-ink: #0f172a;
+      --bdecors-ink-2: #475569;
+      --bdecors-ink-3: #94a3b8;
+      --bdecors-accent: #0aaec3;
+      --bdecors-accent-2: #f97316;
+      --bdecors-glow: rgba(10, 174, 195, 0.3);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      background: var(--bdecors-bg);
+      color: var(--bdecors-ink);
     }
     html {
       scroll-behavior: smooth;
     }
-    /* Enable custom cursor only on devices with fine pointer (mouse/trackpad) */
-    @media (pointer: coarse) {
-      .custom-cursor-wrapper {
-        cursor: auto !important;
-      }
-      .custom-cursor, .custom-cursor-trail {
-        display: none !important;
-      }
+    /* Mouse trail canvas */
+    #mouse-trail {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
     }
-    @media (hover: none) {
-      .custom-cursor-wrapper {
-        cursor: auto !important;
-      }
-      .custom-cursor, .custom-cursor-trail {
+    /* Hide mouse trail on touch devices */
+    @media (pointer: coarse), (hover: none) {
+      #mouse-trail {
         display: none !important;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Mouse Trail Canvas -->
+  <canvas id="mouse-trail"></canvas>
+
   <div id="root"></div>
+
+  <!-- Mouse Trail Script -->
+  <script>
+    (function() {
+      const cv = document.getElementById('mouse-trail');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      let raf, dpr = window.devicePixelRatio || 1;
+      let particles = [];
+      let mouse = { x: -9999, y: -9999, prevX: -9999, prevY: -9999 };
+
+      const resize = () => {
+        cv.width = window.innerWidth * dpr;
+        cv.height = window.innerHeight * dpr;
+        cv.style.width = window.innerWidth + 'px';
+        cv.style.height = window.innerHeight + 'px';
+      };
+      resize();
+      window.addEventListener('resize', resize);
+
+      const onMove = (e) => {
+        mouse.x = e.clientX * dpr;
+        mouse.y = e.clientY * dpr;
+      };
+      window.addEventListener('pointermove', onMove);
+
+      const getAccent = () => {
+        return getComputedStyle(document.documentElement).getPropertyValue('--bdecors-accent').trim() || '#0aaec3';
+      };
+      const getAccent2 = () => {
+        return getComputedStyle(document.documentElement).getPropertyValue('--bdecors-accent-2').trim() || '#f97316';
+      };
+
+      const hex2rgb = (hex) => {
+        const h = hex.replace('#', '');
+        return h.length === 3
+          ? h.split('').map(c => parseInt(c + c, 16))
+          : [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, cv.width, cv.height);
+
+        // Spawn particles along path
+        const dx = mouse.x - mouse.prevX;
+        const dy = mouse.y - mouse.prevY;
+        const dist = Math.hypot(dx, dy);
+        if (mouse.prevX !== -9999 && dist > 2) {
+          const steps = Math.min(Math.floor(dist / 6), 6);
+          for (let i = 0; i < steps; i++) {
+            const t = i / Math.max(steps, 1);
+            const x = mouse.prevX + dx * t;
+            const y = mouse.prevY + dy * t;
+            particles.push({
+              x, y,
+              vx: (Math.random() - 0.5) * 0.6 * dpr,
+              vy: (Math.random() - 0.5) * 0.6 * dpr,
+              life: 1,
+              size: (Math.random() * 2 + 1.4) * dpr,
+              color: Math.random() > 0.5 ? getAccent() : getAccent2(),
+            });
+          }
+        }
+        mouse.prevX = mouse.x;
+        mouse.prevY = mouse.y;
+
+        if (particles.length > 220) particles = particles.slice(-220);
+
+        // Update particles
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.018;
+        }
+        particles = particles.filter(p => p.life > 0);
+
+        // Draw connecting lines
+        ctx.lineWidth = 1 * dpr;
+        for (let i = 0; i < particles.length - 1; i++) {
+          const a = particles[i], b = particles[i + 1];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 24 * dpr) {
+            const [r,g,bl] = hex2rgb(a.color);
+            ctx.strokeStyle = `rgba(${r},${g},${bl},${Math.min(a.life, b.life) * 0.4})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+
+        // Draw particles
+        for (const p of particles) {
+          const [r,g,b] = hex2rgb(p.color);
+          ctx.fillStyle = `rgba(${r},${g},${b},${p.life})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Cursor glow
+        if (mouse.x > 0) {
+          const [r,g,b] = hex2rgb(getAccent());
+          const grd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 24 * dpr);
+          grd.addColorStop(0, `rgba(${r},${g},${b},0.5)`);
+          grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.fillStyle = grd;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 24 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        raf = requestAnimationFrame(draw);
+      };
+      draw();
+    })();
+  </script>
 
   <script type="text/babel">
     const { useState, useEffect } = React;
