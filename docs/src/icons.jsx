@@ -48,6 +48,30 @@ const Icon = ({ name, size = 24, stroke = 1.6 }) => {
       return <svg {...props}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/></svg>;
     case "x":
       return <svg {...props}><path d="m6 6 12 12M18 6 6 18"/></svg>;
+    case "phone":
+      return <svg {...props}><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 19h4"/></svg>;
+    case "heart":
+      return <svg {...props}><path d="M12 21c-6-4-10-8-10-12a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-4 8-10 12Z"/></svg>;
+    case "user":
+      return <svg {...props}><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>;
+    case "diamond":
+      return <svg {...props}><path d="M2.7 10.3l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4Z"/></svg>;
+    case "book":
+      return <svg {...props}><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14M4 19a2 2 0 0 1 2-2h12M4 19v-2"/><path d="M9 9h6M9 13h6"/></svg>;
+    case "tool":
+      return <svg {...props}><path d="M14 7l-2-2M18 11l-2-2M7 17l-2 2M3 21l2-2M14 7l-3 3M18 11l-3 3M7 17l3-3"/></svg>;
+    case "mask":
+      return <svg {...props}><ellipse cx="12" cy="11" rx="10" ry="7"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><path d="M8 15c1 1 3 1 4 0 1 1 3 1 4 0"/></svg>;
+    case "box":
+      return <svg {...props}><path d="M3 7l9-5 9 5v10l-9 5-9-5V7Z"/><path d="M12 7v10M3 7l9 5 9-5"/></svg>;
+    case "sign":
+      return <svg {...props}><path d="M4 7h12l4 5-4 5H4M12 7v14"/></svg>;
+    case "trophy":
+      return <svg {...props}><path d="M6 9h12M8 3h8a1 1 0 0 1 1 1v5c0 3-2 6-5 6s-5-3-5-6V4a1 1 0 0 1 1-1Z"/><path d="M12 15v3M8 21h8M6 6v3M18 6v3"/></svg>;
+    case "paw":
+      return <svg {...props}><ellipse cx="12" cy="16" rx="3" ry="4"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><circle cx="7" cy="14" r="1.5"/><circle cx="17" cy="14" r="1.5"/></svg>;
+    case "utensil":
+      return <svg {...props}><path d="M10 3v6a4 4 0 0 0 4 4h0v8M6 3v18M6 9h4"/></svg>;
     default: return <svg {...props}/>;
   }
 };

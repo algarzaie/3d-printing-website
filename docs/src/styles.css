@@ -182,7 +182,7 @@ img { max-width: 100%; display: block; }
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
 }
-.hero-inner { position: relative; z-index: 2; padding: 40px 0 60px; width: 100%; }
+.hero-inner { position: relative; z-index: 2; padding: 24px 0 40px; width: 100%; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--sans); font-size: 13px; font-weight: 500;
@@ -436,6 +436,110 @@ img { max-width: 100%; display: block; }
 .service-cta:hover { gap: 10px; transition: gap .2s; }
 @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .services { grid-template-columns: 1fr; } }
+
+/* ---------- Simple Services (3-card) ---------- */
+.simple-services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.simple-service {
+  background: linear-gradient(135deg, #ecfeff 0%, #dbeafe 100%);
+  padding: 40px 32px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  text-align: center;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.simple-service:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px -20px rgba(10, 174, 195, 0.3);
+  border-color: var(--accent);
+}
+.simple-service-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 16px;
+  color: white;
+  transition: transform .3s ease;
+}
+.simple-service:hover .simple-service-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+.simple-service h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.simple-service p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+}
+@media (max-width: 900px) { .simple-services { grid-template-columns: 1fr; } }
+
+/* ---------- Print Categories Grid ---------- */
+.print-categories {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+.print-category {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  padding: 24px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  text-align: center;
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.print-category:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -16px rgba(10, 174, 195, 0.3);
+  border-color: var(--accent);
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+.print-category-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  background: white;
+  border-radius: 10px;
+  color: var(--accent);
+  transition: transform .3s ease;
+}
+.print-category:hover .print-category-icon {
+  transform: scale(1.15);
+}
+.print-category-name {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.print-category-tag {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+@media (max-width: 1200px) { .print-categories { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 800px) { .print-categories { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .print-categories { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---------- Materials ---------- */
 /* ---------- Material cards ---------- */

@@ -220,6 +220,32 @@ const ContactForm = () => {
   );
 };
 
+// Simple 3-card services
+const SimpleServices = () => (
+  <div className="simple-services">
+    {D.simpleServices.map((s, i) => (
+      <div key={i} className="simple-service fade-in" style={{ animationDelay: `${i * 80}ms` }}>
+        <div className="simple-service-icon"><Icon name={s.icon} size={32} stroke={1.8}/></div>
+        <h3>{s.title}</h3>
+        <p>{s.desc}</p>
+      </div>
+    ))}
+  </div>
+);
+
+// Print categories grid
+const PrintCategories = () => (
+  <div className="print-categories">
+    {D.printCategories.map((cat, i) => (
+      <div key={i} className="print-category fade-in" style={{ animationDelay: `${i * 30}ms` }}>
+        <div className="print-category-icon"><Icon name={cat.icon} size={28}/></div>
+        <div className="print-category-name">{cat.name}</div>
+        <div className="print-category-tag">{cat.tag}</div>
+      </div>
+    ))}
+  </div>
+);
+
 window.Gallery = Gallery;
 window.Materials = Materials;
 window.MaterialsTable = MaterialsTable;
@@ -228,4 +254,6 @@ window.Industries = Industries;
 window.HowItWorks = HowItWorks;
 window.Services = Services;
 window.ServiceShowcase = ServiceShowcase;
+window.SimpleServices = SimpleServices;
+window.PrintCategories = PrintCategories;
 window.ContactForm = ContactForm;

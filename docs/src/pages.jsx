@@ -33,68 +33,39 @@ const Home = () => (
       </div>
     </section>
 
-    <Marquee/>
-
     <section className="section">
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">Our Services</div>
-            <h2 className="section-title">What we can print.</h2>
-            <p className="section-sub">From sculptural decor to functional parts — every job runs through the same custom workflow.</p>
+            <h2 className="section-title">Our Services</h2>
+            <p className="section-sub">Cutting-edge 3D printing solutions for every need</p>
           </div>
         </div>
-        <Services/>
+        <SimpleServices/>
       </div>
     </section>
 
-    <section className="section" style={{ background: "var(--bg-2)" }}>
+    <section className="section" style={{ background: "var(--bg-2)", padding: "80px 0" }}>
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">Materials</div>
-            <h2 className="section-title">Right material for the job.</h2>
-            <p className="section-sub">Eight production filaments in stock, in a wide range of colors — flexible, rigid, heat-resistant, UV-stable.</p>
-          </div>
-        </div>
-        <Materials preview/>
-      </div>
-    </section>
-
-    <section className="section">
-      <div className="container">
-        <div className="section-head section-head-center">
-          <div>
-            <div className="section-eyebrow">AI Studio</div>
-            <h2 className="section-title">Drop an image. Get a printable model.</h2>
-            <p className="section-sub">Our generative engine converts sketches, photos, and reference images into print-ready meshes. No CAD experience required.</p>
+            <h2 className="section-title" style={{ fontSize: "clamp(28px, 3.8vw, 40px)" }}>2D Photo to 3D Model in Minutes</h2>
+            <p className="section-sub">Our advanced AI technology converts any 2D image into a printable 3D model. Simply upload a photo, and we do the rest.</p>
           </div>
         </div>
         <AIStudio/>
       </div>
     </section>
 
-    <section className="section" style={{ background: "var(--bg-2)" }}>
+    <section className="section">
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">How it works</div>
-            <h2 className="section-title">Four steps. No surprises.</h2>
+            <h2 className="section-title">What We Can Print</h2>
+            <p className="section-sub">From prototypes to production parts</p>
           </div>
         </div>
-        <HowItWorks/>
-      </div>
-    </section>
-
-    <section className="section" style={{ background: "var(--bg-2)" }}>
-      <div className="container">
-        <div className="section-head section-head-center">
-          <div>
-            <div className="section-eyebrow">FAQ</div>
-            <h2 className="section-title">Questions, answered.</h2>
-          </div>
-        </div>
-        <FAQ/>
+        <PrintCategories/>
       </div>
     </section>
 
