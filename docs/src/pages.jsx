@@ -40,11 +40,11 @@ const Home = () => (
         <div className="section-head section-head-center">
           <div>
             <div className="section-eyebrow">Our Services</div>
-            <h2 className="section-title">What we print.</h2>
+            <h2 className="section-title">What we can print.</h2>
             <p className="section-sub">From sculptural decor to functional parts — every job runs through the same custom workflow.</p>
           </div>
         </div>
-        <ServiceShowcase/>
+        <Services/>
       </div>
     </section>
 
