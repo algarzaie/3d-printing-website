@@ -8,14 +8,13 @@ const Home = () => (
       <div className="hero-grid"></div>
       <div className="container hero-inner">
         <div className="hero-eyebrow">
-          <span className="pulse"></span> Advanced 3D Printing · Riyadh, KSA
+          <Icon name="layers" size={14}/> Advanced 3D Printing Technology
         </div>
         <h1 className="hero-title">
           <em>Transform Ideas</em><br/>Into Reality
         </h1>
         <p className="hero-sub">
-          Custom 3D printing services for interior design, furniture, automotive, industrial parts,
-          collectibles, and gifts — with an AI Studio that turns sketches into print-ready models.
+          Professional 3D printing services with AI-powered design tools. From prototype to production in record time.
         </p>
         <div className="hero-actions">
           <a href="#quote" className="btn btn-primary">Get Instant Quote <Icon name="arrow" size={14}/></a>
@@ -33,68 +32,39 @@ const Home = () => (
       </div>
     </section>
 
-    <Marquee/>
-
     <section className="section">
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">Our Services</div>
-            <h2 className="section-title">What we print.</h2>
-            <p className="section-sub">From sculptural decor to functional parts — every job runs through the same custom workflow.</p>
+            <h2 className="section-title">Our Services</h2>
+            <p className="section-sub">Cutting-edge 3D printing solutions for every need</p>
           </div>
         </div>
-        <ServiceShowcase/>
+        <SimpleServices/>
       </div>
     </section>
 
-    <section className="section" style={{ background: "var(--bg-2)" }}>
+    <section className="section" style={{ background: "var(--bg-2)", padding: "80px 0" }}>
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">Materials</div>
-            <h2 className="section-title">Right material for the job.</h2>
-            <p className="section-sub">Eight production filaments in stock, in a wide range of colors — flexible, rigid, heat-resistant, UV-stable.</p>
-          </div>
-        </div>
-        <Materials preview/>
-      </div>
-    </section>
-
-    <section className="section">
-      <div className="container">
-        <div className="section-head section-head-center">
-          <div>
-            <div className="section-eyebrow">AI Studio</div>
-            <h2 className="section-title">Drop an image. Get a printable model.</h2>
-            <p className="section-sub">Our generative engine converts sketches, photos, and reference images into print-ready meshes. No CAD experience required.</p>
+            <h2 className="section-title" style={{ fontSize: "clamp(28px, 3.8vw, 40px)" }}>2D Photo to 3D Model in Minutes</h2>
+            <p className="section-sub">Our advanced AI technology converts any 2D image into a printable 3D model. Simply upload a photo, and we do the rest.</p>
           </div>
         </div>
         <AIStudio/>
       </div>
     </section>
 
-    <section className="section" style={{ background: "var(--bg-2)" }}>
+    <section className="section">
       <div className="container">
         <div className="section-head section-head-center">
           <div>
-            <div className="section-eyebrow">How it works</div>
-            <h2 className="section-title">Four steps. No surprises.</h2>
+            <h2 className="section-title">What We Can Print</h2>
+            <p className="section-sub">From prototypes to production parts</p>
           </div>
         </div>
-        <HowItWorks/>
-      </div>
-    </section>
-
-    <section className="section" style={{ background: "var(--bg-2)" }}>
-      <div className="container">
-        <div className="section-head section-head-center">
-          <div>
-            <div className="section-eyebrow">FAQ</div>
-            <h2 className="section-title">Questions, answered.</h2>
-          </div>
-        </div>
-        <FAQ/>
+        <PrintCategories/>
       </div>
     </section>
 

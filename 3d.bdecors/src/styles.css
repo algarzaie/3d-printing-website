@@ -182,7 +182,7 @@ img { max-width: 100%; display: block; }
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 85%);
 }
-.hero-inner { position: relative; z-index: 2; padding: 80px 0 120px; width: 100%; }
+.hero-inner { position: relative; z-index: 2; padding: 24px 0 40px; width: 100%; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--sans); font-size: 13px; font-weight: 500;
@@ -383,33 +383,52 @@ img { max-width: 100%; display: block; }
   gap: 20px;
 }
 .service {
-  background: var(--bg-2);
+  background: linear-gradient(135deg, #ecfeff 0%, #dbeafe 100%);
   padding: 36px 32px;
   border-radius: 14px;
   border: 1px solid var(--line);
   display: flex; flex-direction: column; gap: 16px;
-  transition: border-color .25s, transform .25s, box-shadow .25s;
-  min-height: 280px;
+  transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  min-height: 300px;
   text-decoration: none;
   position: relative;
   overflow: hidden;
 }
 .service::before {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 5%, transparent), transparent 60%);
-  opacity: 0; transition: opacity .25s;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 8%, transparent), transparent 60%);
+  opacity: 0; transition: opacity .3s ease;
   pointer-events: none;
 }
-.service:hover { border-color: var(--line-2); transform: translateY(-4px); box-shadow: 0 18px 40px -28px var(--glow); }
+.service:hover {
+  border-color: var(--accent);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px -20px rgba(10, 174, 195, 0.4), 0 12px 24px -12px rgba(10, 174, 195, 0.2);
+}
 .service:hover::before { opacity: 1; }
-.service-num { font-family: var(--sans); font-size: 12px; letter-spacing: 0.06em; color: var(--ink-3); font-weight: 500; }
+.service-num {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  padding: 4px 12px;
+  border-radius: 6px;
+  align-self: flex-start;
+}
 .service-icon {
-  width: 48px; height: 48px;
+  width: 56px; height: 56px;
   color: var(--accent);
   display: grid; place-items: center;
-  margin-bottom: 4px;
-  background: color-mix(in oklab, var(--accent) 10%, transparent);
-  border-radius: 12px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 15%, transparent), color-mix(in oklab, var(--accent-2) 10%, transparent));
+  border-radius: 14px;
+  transition: transform .3s ease;
+}
+.service:hover .service-icon {
+  transform: scale(1.1);
 }
 .service h3 { font-family: var(--display); font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.015em; color: var(--ink); }
 .service p { color: var(--ink-2); margin: 0; font-size: 15px; line-height: 1.55; }
@@ -417,6 +436,110 @@ img { max-width: 100%; display: block; }
 .service-cta:hover { gap: 10px; transition: gap .2s; }
 @media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .services { grid-template-columns: 1fr; } }
+
+/* ---------- Simple Services (3-card) ---------- */
+.simple-services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.simple-service {
+  background: linear-gradient(135deg, #ecfeff 0%, #dbeafe 100%);
+  padding: 40px 32px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  text-align: center;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.simple-service:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px -20px rgba(10, 174, 195, 0.3);
+  border-color: var(--accent);
+}
+.simple-service-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 16px;
+  color: white;
+  transition: transform .3s ease;
+}
+.simple-service:hover .simple-service-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+.simple-service h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.simple-service p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+}
+@media (max-width: 900px) { .simple-services { grid-template-columns: 1fr; } }
+
+/* ---------- Print Categories Grid ---------- */
+.print-categories {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+.print-category {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  padding: 24px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  text-align: center;
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.print-category:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -16px rgba(10, 174, 195, 0.3);
+  border-color: var(--accent);
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+.print-category-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  background: white;
+  border-radius: 10px;
+  color: var(--accent);
+  transition: transform .3s ease;
+}
+.print-category:hover .print-category-icon {
+  transform: scale(1.15);
+}
+.print-category-name {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.print-category-tag {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+@media (max-width: 1200px) { .print-categories { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 800px) { .print-categories { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .print-categories { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---------- Materials ---------- */
 /* ---------- Material cards ---------- */
