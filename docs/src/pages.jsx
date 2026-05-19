@@ -8,14 +8,13 @@ const Home = () => (
       <div className="hero-grid"></div>
       <div className="container hero-inner">
         <div className="hero-eyebrow">
-          <span className="pulse"></span> Advanced 3D Printing · Riyadh, KSA
+          <Icon name="layers" size={14}/> Advanced 3D Printing Technology
         </div>
         <h1 className="hero-title">
           <em>Transform Ideas</em><br/>Into Reality
         </h1>
         <p className="hero-sub">
-          Custom 3D printing services for interior design, furniture, automotive, industrial parts,
-          collectibles, and gifts — with an AI Studio that turns sketches into print-ready models.
+          Professional 3D printing services with AI-powered design tools. From prototype to production in record time.
         </p>
         <div className="hero-actions">
           <a href="#quote" className="btn btn-primary">Get Instant Quote <Icon name="arrow" size={14}/></a>

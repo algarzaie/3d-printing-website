@@ -234,17 +234,34 @@ const SimpleServices = () => (
 );
 
 // Print categories grid
-const PrintCategories = () => (
-  <div className="print-categories">
-    {D.printCategories.map((cat, i) => (
-      <div key={i} className="print-category fade-in" style={{ animationDelay: `${i * 30}ms` }}>
-        <div className="print-category-icon"><Icon name={cat.icon} size={28}/></div>
-        <div className="print-category-name">{cat.name}</div>
-        <div className="print-category-tag">{cat.tag}</div>
-      </div>
-    ))}
-  </div>
-);
+const PrintCategories = () => {
+  const handleCategoryClick = (categoryName) => {
+    // Placeholder for future gallery page
+    // TODO: Navigate to category-specific gallery page
+    console.log(`Viewing ${categoryName} gallery`);
+    alert(`${categoryName} gallery coming soon! This will show our completed work in this category.`);
+  };
+
+  return (
+    <div className="print-categories">
+      {D.printCategories.map((cat, i) => (
+        <div
+          key={i}
+          className="print-category fade-in"
+          style={{ animationDelay: `${i * 30}ms` }}
+          onClick={() => handleCategoryClick(cat.name)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === 'Enter' && handleCategoryClick(cat.name)}
+        >
+          <div className="print-category-icon"><Icon name={cat.icon} size={28}/></div>
+          <div className="print-category-name">{cat.name}</div>
+          <div className="print-category-tag">{cat.tag}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 window.Gallery = Gallery;
 window.Materials = Materials;
