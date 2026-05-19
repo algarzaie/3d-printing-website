@@ -13,13 +13,24 @@ const Logo = () => (
   <a href="#home" className="logo">
     <span className="logo-mark">
       <svg viewBox="0 0 40 40" fill="none">
-        <path d="M8 24 L20 30 L32 24" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
-        <path d="M8 18 L20 24 L32 18" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
-        <path d="M8 12 L20 18 L32 12 L20 6 Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
-        <circle cx="30" cy="10" r="3.2" fill="var(--accent-2)"/>
+        <defs>
+          <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: "var(--accent)", stopOpacity: 1 }}/>
+            <stop offset="100%" style={{ stopColor: "var(--accent-2)", stopOpacity: 1 }}/>
+          </linearGradient>
+        </defs>
+        <path d="M8 24 L20 30 L32 24" stroke="url(#layerGrad)" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
+        <path d="M8 18 L20 24 L32 18" stroke="url(#layerGrad)" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
+        <path d="M8 12 L20 18 L32 12 L20 6 Z" stroke="url(#layerGrad)" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
       </svg>
     </span>
-    <span>PrintPro<em style={{ color: "var(--ink)", fontStyle: "normal", fontWeight: 700, marginLeft: 4 }}>3D</em></span>
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <span style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+        <strong style={{ fontWeight: 700, color: "var(--ink)" }}>BDecors</strong>
+        <em style={{ color: "var(--accent)", fontStyle: "normal", fontWeight: 700 }}>3D</em>
+      </span>
+      <span style={{ fontSize: 10, color: "var(--ink-3)", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" }}>Advanced 3D Printing</span>
+    </div>
   </a>
 );
 

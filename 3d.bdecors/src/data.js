@@ -30,6 +30,43 @@ window.SITE_DATA = {
     { num: "Same-day", label: "Riyadh Delivery" },
     { num: "AI", label: "2D → 3D Studio" },
   ],
+  simpleServices: [
+    {
+      icon: "rocket",
+      title: "Rapid Prototyping",
+      desc: "Turn your concepts into reality within hours. Perfect for product development and testing.",
+    },
+    {
+      icon: "cube",
+      title: "Custom Parts Manufacturing",
+      desc: "Precision 3D printed parts for industrial, automotive, and consumer applications.",
+    },
+    {
+      icon: "spark",
+      title: "AI-Powered 2D to 3D",
+      desc: "Upload a photo and we'll convert it to a printable 3D model using SUAPP AI technology.",
+    },
+  ],
+  printCategories: [
+    { icon: "phone", name: "Custom Phone Cases", tag: "Consumer" },
+    { icon: "wrench", name: "Mechanical Parts", tag: "Industrial" },
+    { icon: "building", name: "Architectural Models", tag: "Architecture" },
+    { icon: "cube", name: "Product Prototypes", tag: "Design" },
+    { icon: "heart", name: "Medical Models", tag: "Healthcare" },
+    { icon: "user", name: "Custom Figurines", tag: "Entertainment" },
+    { icon: "diamond", name: "Jewelry & Accessories", tag: "Fashion" },
+    { icon: "car", name: "Automotive Parts", tag: "Automotive" },
+    { icon: "rocket", name: "Drone Components", tag: "Aerospace" },
+    { icon: "book", name: "Educational Models", tag: "Education" },
+    { icon: "lamp", name: "Home Decor", tag: "Interior" },
+    { icon: "tool", name: "Replacement Parts", tag: "Repair" },
+    { icon: "mask", name: "Cosplay Props", tag: "Entertainment" },
+    { icon: "box", name: "Custom Enclosures", tag: "Electronics" },
+    { icon: "sign", name: "Signage & Displays", tag: "Marketing" },
+    { icon: "trophy", name: "Sports Equipment", tag: "Sports" },
+    { icon: "paw", name: "Pet Accessories", tag: "Pets" },
+    { icon: "utensil", name: "Kitchen Tools", tag: "Home" },
+  ],
   services: [
     {
       num: "01",
